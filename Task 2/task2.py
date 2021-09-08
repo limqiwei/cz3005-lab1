@@ -3,7 +3,7 @@ from queue import PriorityQueue
 import time
 
 '''
-The output of your algorithm should be formatted as the following:
+output format:
 Shortest path: S->1->T.
 Shortest distance: 12.
 Total energy cost: 10.
@@ -18,8 +18,13 @@ def neighbours(node, graph):
 
 
 def get_cost(from_node, to_node, cost):
-    node_pair = str(from_node) + "," + str(to_node)
-    return cost[node_pair]
+    edge = str(from_node) + "," + str(to_node)
+    return cost[edge]
+
+
+def get_dist(from_node, to_node, dist):
+    edge = str(from_node) + "," + str(to_node)
+    return dist[edge]
 
 
 def UCS(source, target, graph, cost):
@@ -28,14 +33,13 @@ def UCS(source, target, graph, cost):
     
     queue.put(source, 0)
     visited[source] = None
-    prev_cost = 0;
+    prev_cost = 0
 
     while queue:
         current = queue.get()
         if current == target:
             break
         for next in neighbours(current, graph):
-
             current_cost = get_cost(current, next, cost)
             new_cost = prev_cost + current_cost
             if next not in visited or new_cost < prev_cost:
@@ -43,30 +47,31 @@ def UCS(source, target, graph, cost):
                 queue.put(next, current_cost)
                 visited[next] = current
 
-
     return visited
 
 
-def get_path(source, target, visited, cost):
+def get_path(source, target, visited, cost, dist):
     path = []
-    total_cost = 0
     current = target
-    path_format = ""
+    total_cost = 0
+    total_dist = 0
+    path_str = ""
 
     while current != source:
         path.append(int(current))
         total_cost += get_cost(current, visited[current], cost)
+        total_dist += get_dist(current, visited[current], dist)
         current = visited[current]
     
     path.append(int(source))
     path.reverse()
 
     for node in range(len(path)-1):
-        path_format += str(path[node]) + " -> "
+        path_str += str(path[node]) + " -> "
     
-    path_format += target
+    path_str += target
 
-    return path_format, total_cost
+    return path_str, total_cost, total_dist
 
 
 if __name__ == "__main__":
@@ -88,13 +93,16 @@ if __name__ == "__main__":
     start_time = time.time()
 
     visited = UCS(source, target, graph, cost)
-    path, total_cost = get_path(source, target, visited, cost)
+    path, total_cost, total_dist = get_path(source, target, visited, cost, dist)
 
     end_time = time.time()
-    
+
+    print("")
     print("Shortest path: " + str(path))
-    # print("Shortest distance: " + )
+    print("")
+    print("Shortest distance: " + str(total_dist))
     print("Total energy cost: " + str(total_cost))
+    print("")
 
     time_taken = str(end_time - start_time)
     print("time taken: "+ time_taken + " sec")
