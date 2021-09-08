@@ -27,21 +27,41 @@ Target Node: "50"
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 # We define a function that will help us calculate the straight line distance using the coordinates of the current node and the target node.
 
 # Coordinates of Node "1": [-73530767, 41085396]
 # Coordinates of Node "50": [-73643471, 41026897]
 
 def getStraightLineDistance(x1,y1,x2,y2):
+    """
+    Takes in coordinates from 2 nodes where Node 1 = (x1,y1) and Node 2 = (x2, y2).
+
+    Will return the straight line distance between these 2 nodes.
+    """
     x1x2 = x2 - x1
     y1y2 = y2 - y1
     distance = sqrt(pow(x1x2,2)+pow(y1y2,2))
     return distance
 
 
-node1_node50 = getStraightLineDistance(-73530767,41085396,-73643471,41026897) 
-# 112704, 58499
-print(node1_node50)
+## Test codes here
+# node1_node50 = getStraightLineDistance(-73530767,41085396,-73643471,41026897) 
+# # 112704, 58499
+# print(node1_node50)
+
 
 
 
