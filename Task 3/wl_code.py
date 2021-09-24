@@ -27,34 +27,40 @@ def get_dist(from_node, to_node, dist):
     return dist[edge]
 
 
-def UCS(source, target, graph, cost):
+def UCS(source, target, graph, cost, distance):
     queue = PriorityQueue()
     visited = {}
-    cost_data = {} # "3" : "10" => Total cost from the source node
+    distance_cost_data = {} # "3" : "10" => Total cost from the source node
 
     # queue.put(source, 0)
     queue.put((0, source))
     visited[source] = None
-    cost_data[source] = 0
+    distance_cost_data[source] = {"g_value": 0, "cost": 0}
 
     # prev_cost = 0
 
     while queue:
         # current = queue.get()
         (curr_cost, current) = queue.get()
-        print(current)
+        # print(current)
         if current == target:
             break
         for next in neighbours(current, graph):
-            current_cost = get_cost(current, next, cost)
-            new_cost = cost_data[current] + current_cost
-            # new_cost = prev_cost + current_cost
+
+            cost_to_next = get_cost(current, next, cost)
+            new_cost = distance_cost_data[current]["cost"] + cost_to_next
+
+            distance_to_next = get_dist(current, next, distance) 
+            new_distance = distance_cost_data[current]["g_value"] + distance_to_next
+            # new_cost = prev_cost + cost_to_next
             # print(next)
             # print(f"Previous Cost: {prev_cost}, New cost: {new_cost}")
             if (next not in visited and new_cost < 287932): # new_cost < prev_cost and new_cost < 287932
-                cost_data[next] = new_cost
-                # queue.put(next, current_cost)
-                queue.put((current_cost, next))
+                distance_cost_data[next] = {"g_value": 0, "cost": 0}
+                distance_cost_data[next]["cost"] = new_cost
+                distance_cost_data[next]["g_value"] = new_distance
+                # queue.put(next, cost_to_next)
+                queue.put((new_distance, next))
                 visited[next] = current
 
     return visited
@@ -106,7 +112,7 @@ def main():
     print("searching...")
     start_time = time.time()
 
-    visited = UCS(source, target, graph, cost)
+    visited = UCS(source, target, graph, cost, dist)
     path, total_cost, total_dist = get_path(source, target, visited, cost, dist)
     # path, total_cost = get_path(source, target, visited, cost)
 
