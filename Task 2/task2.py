@@ -51,6 +51,7 @@ def UCS(source, target, graph, cost):
 
 
 def get_path(source, target, visited, cost, dist):
+# def get_path(source, target, visited, cost):
     path = []
     current = target
     total_cost = 0
@@ -69,12 +70,14 @@ def get_path(source, target, visited, cost, dist):
     for node in range(len(path)-1):
         path_str += str(path[node]) + " -> "
     
-    path_str += target
+    # path_str += target
+    path_str += str(path[node+1])
 
     return path_str, total_cost, total_dist
+    # return path_str, total_cost
 
 
-if __name__ == "__main__":
+def main():
     print("running...")
 
     print("loading files...")
@@ -94,6 +97,7 @@ if __name__ == "__main__":
 
     visited = UCS(source, target, graph, cost)
     path, total_cost, total_dist = get_path(source, target, visited, cost, dist)
+    # path, total_cost = get_path(source, target, visited, cost)
 
     end_time = time.time()
 
@@ -108,3 +112,6 @@ if __name__ == "__main__":
     print("time taken: "+ time_taken + " sec")
     print("terminating...")
 
+
+if __name__ == "__main__":
+    main()
