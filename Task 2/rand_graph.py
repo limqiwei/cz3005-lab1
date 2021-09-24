@@ -57,4 +57,3 @@ nx.draw(ug, with_labels=True)
 nx.draw_networkx_edge_labels(ug, pos, edge_labels=labels)
 
 plt.show()
-

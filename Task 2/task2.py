@@ -2,16 +2,7 @@ import json
 from queue import PriorityQueue
 import time
 
-'''
-output format:
-Shortest path: S->1->T.
-Shortest distance: 12.
-Total energy cost: 10.
 
-total energy cost <= 287932
-start node = "1"
-end node = "50"
-'''
 
 def neighbours(node, graph):
     return graph[node]
@@ -27,72 +18,75 @@ def get_dist(from_node, to_node, dist):
     return dist[edge]
 
 
-def UCS(source, target, graph, cost):
+def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
     queue = PriorityQueue()
     visited = {}
-    
-    # queue.put(source, 0)
-    queue.put((0, source))
-    visited[source] = None
-    prev_cost = 0
+    dist_so_far = {}
+    cost_so_far = {}
+
+    queue.put((0, SOURCE))
+    visited[SOURCE] = None
+    dist_so_far[SOURCE] = 0
+    cost_so_far[SOURCE] = 0
 
     while queue:
-        # current = queue.get()
-        (curr_cost, current) = queue.get()
-        print(current)
-        if current == target:
+        current = queue.get()[1]
+
+        if current == TARGET:
             break
-        for next in neighbours(current, graph):
-            current_cost = get_cost(current, next, cost)
-            new_cost = prev_cost + current_cost
-            print(next)
-            print(new_cost)
-            if next not in visited and new_cost < prev_cost and new_cost < 287932:
-                prev_cost = new_cost
-                # queue.put(next, current_cost)
-                queue.put((current_cost, next))
-                visited[next] = current
+
+        for next in neighbours(current, GRAPH):
+            next_cost = get_cost(current, next, COST)
+            new_cost = cost_so_far[current] + next_cost
+
+            distance_to_next = get_dist(current, next, DIST) 
+            new_dist = dist_so_far[current] + distance_to_next
+
+            if next not in visited or new_dist < dist_so_far[next]:
+                if new_cost <= ENERGY:
+                    dist_so_far[next] = new_dist
+                    cost_so_far[next] = new_cost
+                    queue.put((new_dist, next))
+                    visited[next] = current
 
     return visited
 
 
-def get_path(source, target, visited, cost, dist):
-# def get_path(source, target, visited, cost):
+def get_path(SOURCE, TARGET, visited, COST, DIST):
     path = []
-    current = target
+    current = TARGET
     total_cost = 0
     total_dist = 0
     path_str = ""
 
-    while current != source:
+    while current != SOURCE:
         path.append(int(current))
-        total_cost += get_cost(current, visited[current], cost)
-        total_dist += get_dist(current, visited[current], dist)
+        total_cost += get_cost(current, visited[current], COST)
+        total_dist += get_dist(current, visited[current], DIST)
         current = visited[current]
     
-    path.append(int(source))
+    path.append(int(SOURCE))
     path.reverse()
 
     for node in range(len(path)-1):
         path_str += str(path[node]) + " -> "
     
-    # path_str += target
+    # path_str += TARGET
     path_str += str(path[node+1])
 
     return path_str, total_cost, total_dist
-    # return path_str, total_cost
 
 
 def main():
     print("running...")
 
     print("loading files...")
-    graph = json.load(open("G.json", "r"))
-    cost = json.load(open("Cost.json", "r"))
-    dist = json.load(open("Dist.json", "r"))
-    # target = "50"
-    target = "1357"
-    source = "1"
+    GRAPH = json.load(open("G.json", "r"))
+    COST = json.load(open("Cost.json", "r"))
+    DIST = json.load(open("Dist.json", "r"))
+    TARGET = "50"
+    SOURCE = "1"
+    ENERGY_CONSTRAINT = 287932
 
     # graph = json.load(open("G_test.json", "r"))
     # cost = json.load(open("Cost_test.json", "r"))
@@ -102,9 +96,8 @@ def main():
     print("searching...")
     start_time = time.time()
 
-    visited = UCS(source, target, graph, cost)
-    path, total_cost, total_dist = get_path(source, target, visited, cost, dist)
-    # path, total_cost = get_path(source, target, visited, cost)
+    visited = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    path, total_cost, total_dist = get_path(SOURCE, TARGET, visited, COST, DIST)
 
     end_time = time.time()
 
