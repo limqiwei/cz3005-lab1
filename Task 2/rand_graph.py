@@ -50,7 +50,11 @@ f2.write(Cost_json)
 f1.close()
 f2.close()
 
+labels = {e: ug.edges[e]['weight'] for e in ug.edges}
+pos = nx.circular_layout(ug)
+
 nx.draw(ug, with_labels=True)
+nx.draw_networkx_edge_labels(ug, pos, edge_labels=labels)
 
 plt.show()
 
