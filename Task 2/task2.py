@@ -31,20 +31,26 @@ def UCS(source, target, graph, cost):
     queue = PriorityQueue()
     visited = {}
     
-    queue.put(source, 0)
+    # queue.put(source, 0)
+    queue.put((0, source))
     visited[source] = None
     prev_cost = 0
 
     while queue:
-        current = queue.get()
+        # current = queue.get()
+        (curr_cost, current) = queue.get()
+        print(current)
         if current == target:
             break
         for next in neighbours(current, graph):
             current_cost = get_cost(current, next, cost)
             new_cost = prev_cost + current_cost
-            if next not in visited or new_cost < prev_cost:
+            print(next)
+            print(new_cost)
+            if next not in visited and new_cost < prev_cost and new_cost < 287932:
                 prev_cost = new_cost
-                queue.put(next, current_cost)
+                # queue.put(next, current_cost)
+                queue.put((current_cost, next))
                 visited[next] = current
 
     return visited
@@ -84,7 +90,8 @@ def main():
     graph = json.load(open("G.json", "r"))
     cost = json.load(open("Cost.json", "r"))
     dist = json.load(open("Dist.json", "r"))
-    target = "50"
+    # target = "50"
+    target = "1357"
     source = "1"
 
     # graph = json.load(open("G_test.json", "r"))
