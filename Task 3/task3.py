@@ -53,7 +53,7 @@ node_dict = {}
 for key in graph_dict.keys():
     key_coord = coord_dict[key]
     # distance_to_target = get_straight_line_distance(key_coord, target_coord)
-    node_dict[key] = {"node": key, "parent_node": None, "g_value" : -1, "total_cost": -1, "visited":False}
+    node_dict[key] = {"node": key, "parent_node": "None", "g_value" : -1, "total_cost": -1, "visited":False}
     # node_dict[key] = [False, None, -1, -1, -1] # [Visited, ParentNode, distance_from_source, cost_from_source, distance to target]
 
 # Define functions
@@ -146,7 +146,8 @@ else:
     path = returnPath(TARGET_NODE)
     print("Shortest Path: " + "->".join(path))
     print("Distance: " + str(node_dict[TARGET_NODE]["g_value"]))
-    
+    print("Total Cost: " + str(node_dict[TARGET_NODE]["total_cost"]))
+
 print("--- %s seconds ---" % (time.time() - start_time))
 # exit()
 # End of test code
