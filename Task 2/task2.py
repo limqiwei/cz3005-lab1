@@ -42,11 +42,11 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
             new_dist = dist_so_far[current] + distance_to_next
 
             if next not in visited or new_dist < dist_so_far[next]:
-                # if new_cost <= ENERGY:
-                dist_so_far[next] = new_dist
-                cost_so_far[next] = new_cost
-                queue.put((new_dist, next))
-                visited[next] = current
+                if new_cost <= ENERGY:
+                    dist_so_far[next] = new_dist
+                    cost_so_far[next] = new_cost
+                    queue.put((new_dist, next))
+                    visited[next] = current
 
     return visited
 
