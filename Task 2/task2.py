@@ -3,18 +3,18 @@ from queue import PriorityQueue
 import time
 
 
-def neighbours(node, graph):
-    return graph[node]
+def neighbours(node, GRAPH):
+    return GRAPH[node]
 
 
-def get_cost(from_node, to_node, cost):
+def get_cost(from_node, to_node, COST):
     edge = str(from_node) + "," + str(to_node)
-    return cost[edge]
+    return COST[edge]
 
 
-def get_dist(from_node, to_node, dist):
+def get_dist(from_node, to_node, DIST):
     edge = str(from_node) + "," + str(to_node)
-    return dist[edge]
+    return DIST[edge]
 
 
 def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
@@ -42,40 +42,37 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
             new_dist = dist_so_far[current] + distance_to_next
 
             if next not in visited or new_dist < dist_so_far[next]:
-                if new_cost <= ENERGY:
+                if new_cost <= ENERGY: # remove this to check if path has shortest dist (without energy constraint)
                     dist_so_far[next] = new_dist
                     cost_so_far[next] = new_cost
                     queue.put((new_dist, next))
                     visited[next] = current
 
-    return visited
+    return visited, dist_so_far[current], cost_so_far[current]
 
 
-def get_path(SOURCE, TARGET, visited, COST, DIST):
-    path = []
+def get_path(SOURCE, TARGET, visited):
     current = TARGET
-    total_cost = 0
-    total_dist = 0
+    path = []
     path_str = ""
 
     while current != SOURCE:
-        path.append(int(current))
-        total_cost += get_cost(current, visited[current], COST)
-        total_dist += get_dist(current, visited[current], DIST)
+        path.append(current)
         current = visited[current]
     
-    path.append(int(SOURCE))
+    path.append(SOURCE)
     path.reverse()
 
     for node in range(len(path)-1):
-        path_str += str(path[node]) + " -> "
+        path_str += path[node] + " -> "
     
-    path_str += str(path[node+1])
+    path_str += path[node+1]
 
+    # remove before submission
     global path_list 
     path_list = list(map(str, path))
 
-    return path_str, total_cost, total_dist
+    return path_str
 
 
 # remove function before submission
@@ -87,8 +84,8 @@ def search():
     SOURCE = "1"
     ENERGY_CONSTRAINT = 287932
 
-    visited = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
-    get_path(SOURCE, TARGET, visited, COST, DIST)
+    visited, _, _ = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    get_path(SOURCE, TARGET, visited)
     
 
 def main():
@@ -102,16 +99,17 @@ def main():
     SOURCE = "1"
     ENERGY_CONSTRAINT = 287932
 
-    # # graph = json.load(open("G_test.json", "r"))
-    # # cost = json.load(open("Cost_test.json", "r"))
-    # # target = "3"
-    # # source = "0"
+    # remove before submission
+    # graph = json.load(open("G_test.json", "r"))
+    # cost = json.load(open("Cost_test.json", "r"))
+    # target = "3"
+    # source = "0"
 
     print("searching...")
     start_time = time.time()
 
-    visited = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
-    path, total_cost, total_dist = get_path(SOURCE, TARGET, visited, COST, DIST)
+    visited, total_dist, total_cost = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    path = get_path(SOURCE, TARGET, visited)
 
     end_time = time.time()
 
@@ -126,10 +124,9 @@ def main():
     print(f"Time taken: {time_taken} sec \n")
 
 
+# remove before submission
 if __name__ == "__main__":
     main()
-
-# remove before submission
 else:
     search()
 
