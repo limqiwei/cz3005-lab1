@@ -1,5 +1,5 @@
 import json
-from queue import PriorityQueue
+import queue as q
 import time
 
 
@@ -18,7 +18,7 @@ def get_dist(from_node, to_node, DIST):
 
 
 def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
-    queue = PriorityQueue()
+    queue = q.PriorityQueue()
     visited = {}
     dist_so_far = {}
     cost_so_far = {}
