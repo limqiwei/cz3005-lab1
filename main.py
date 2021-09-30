@@ -5,13 +5,11 @@ import Task1.task1 as t1
 
 
 def main():
-    message = """
-    == Main Menu ==
-    1) Algorithm 1 - Shortest Distance\n\
-    2) Algorithm 2 - Shortest Distance with Energy Constraint using USC\n\
-    3) Algorithm 3 - Shortest Distance with Energy Constraint using ASTAR\n\
-    4) Quit) 
-    """
+    message = "== Main Menu ==\n\
+        1) Algorithm 1 - Shortest Distance\n\
+        2) Algorithm 2 - Shortest Distance with Energy Constraint using USC\n\
+        3) Algorithm 3 - Shortest Distance with Energy Constraint using ASTAR\n\
+        4) Quit)"
     print(message)
     
 
@@ -30,7 +28,9 @@ def main():
                 print("Quiting...")
             else:
                 print("Invalid choice! Please try again")
+                print(message)
         except:
+            print(message)
             print("Please enter a number!")
 
 if __name__ == "__main__":
