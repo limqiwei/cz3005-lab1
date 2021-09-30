@@ -5,7 +5,7 @@ import Task1.task1 as t1
 
 
 def main():
-    message = "= CZ3005 Lab 1 Project Main Menu =\n\
+    message = "\n\n= CZ3005 Lab 1 Project Main Menu =\n\
     = Description = \n\
     Algorithm 1 - Shortest Distance without Energy Constraint\n\
     Algorithm 2 - Shortest Distance with Energy Constraint using USC\n\
@@ -18,52 +18,54 @@ def main():
     4) Algorithm 1 [Manual]\n\
     5) Algorithm 2 [Manual]\n\
     6) Algorithm 3 [Manual]\n\n\
-    7) Quit)"
-
-    print(message)
-    
+    7) Quit\n"
+   
 
     quit = False
     while (not(quit)):
+
+        print(message)
+
         try:
             choice = int(input("Please enter your choice: "))
+
             if (choice == 1):
-                print("Running Algorith 1 - Preset")
+                print("Running Algorithm 1 - Preset\n")
                 t1.main()
+                input("Press [Enter] to continue...")
             elif (choice == 2):
-                print("Running Algorith 2 - Preset")
+                print("Running Algorithm 2 - Preset\n")
                 t2.main()
+                input("Press [Enter] to continue...")
             elif (choice == 3):
-                print("Running Algorith 3 - Preset")
+                print("Running Algorithm 3 - Preset\n")
                 t3.main()
+                input("Press [Enter] to continue...")
+
             elif (choice == 4):
-                print("Running Algorith 1 - Manual")
-                # Call function here
+                print("Running Algorithm 1 - Manual\n")
+                # Call function here:
+
+                input("Press [Enter] to continue...")
             elif (choice == 5):
-                print("Running Algorith 2 - Manual")
-                # Call function here
+                print("Running Algorithm 2 - Manual\n")
+                t2.custom()
+                input("Press [Enter] to continue...")
             elif (choice == 6):
-                print("Running Algorith 3 - Manual")
-                # Call function here
+                print("Running Algorithm 3 - Manual\n")
+                # Call function here:
+
+                input("Press [Enter] to continue...")
+            
             elif (choice == 7):
                 quit = True
-                print("Quiting...")
+                print("Quiting...\n")
             else:
                 print("Invalid choice! Please try again")
+
         except:
             print("Please enter a number!")
 
 if __name__ == "__main__":
     main()
-
-
-
-    
-    
-
-
-
-
-    
-
 

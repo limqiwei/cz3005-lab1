@@ -22,16 +22,18 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
     visited = {}
     dist_so_far = {}
     cost_so_far = {}
+    target_reached = False
 
     queue.put((0, SOURCE))
     visited[SOURCE] = None
     dist_so_far[SOURCE] = 0
     cost_so_far[SOURCE] = 0
 
-    while queue:
+    while not queue.empty():
         current = queue.get()[1]
 
         if current == TARGET:
+            target_reached = True
             break
  
         for next in neighbours(current, GRAPH):
@@ -48,7 +50,7 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
                     queue.put((new_dist, next))
                     visited[next] = current
 
-    return visited, dist_so_far[current], cost_so_far[current]
+    return visited, dist_so_far[current], cost_so_far[current], target_reached
 
 
 def get_path(SOURCE, TARGET, visited):
@@ -71,35 +73,63 @@ def get_path(SOURCE, TARGET, visited):
     return path_str
 
 
-def main():
-    print("running...")
+def search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT):       
+    print("searching...")
+    start_time = time.time()
+
+    visited, total_dist, total_cost, target_reached = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    
+    end_time = time.time()
+
+    if target_reached:
+        path = get_path(SOURCE, TARGET, visited)
+        print(f"\nShortest path: {path}")
+        print(f"\nShortest distance: {total_dist}")
+        print(f"Total energy cost: {total_cost}\n")
+    else:
+        print(f"\nNo path exists between SOURCE and TARGET with energy budget = {ENERGY_CONSTRAINT}.")
+
+    time_taken = end_time - start_time
+    print(f"Time taken: {time_taken} sec \n")
+
+
+def custom():
+    print("running...\n")
 
     print("loading files...")
     GRAPH = json.load(open("G.json", "r"))
     COST = json.load(open("Cost.json", "r"))
     DIST = json.load(open("Dist.json", "r"))
-    TARGET = "50"
+
+    print("")
+    SOURCE = str(input("Enter source node: ")) # 1
+    TARGET = str(input("Enter target node: ")) # 20
+    ENERGY_CONSTRAINT = int(input("Enter energy budget: "))
+    print("")
+
+    if SOURCE in GRAPH and TARGET in GRAPH:
+        search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    else:
+        print("SOURCE/TARGET not in GRAPH!")
+
+
+def main():
+    print("running...")
+
+    print("loading files...\n")
+    GRAPH = json.load(open("G.json", "r"))
+    COST = json.load(open("Cost.json", "r"))
+    DIST = json.load(open("Dist.json", "r"))
+
     SOURCE = "1"
+    TARGET = "50"
     ENERGY_CONSTRAINT = 287932
 
-    print("searching...")
-    start_time = time.time()
-
-    visited, total_dist, total_cost = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
-    path = get_path(SOURCE, TARGET, visited)
-
-    end_time = time.time()
-
-    print("")
-    print(f"Shortest path: {path}")
-    print("")
-    print(f"Shortest distance: {total_dist}")
-    print(f"Total energy cost: {total_cost}")
-    print("")
-
-    time_taken = end_time - start_time
-    print(f"Time taken: {time_taken} sec \n")
-
+    if SOURCE in GRAPH and TARGET in GRAPH:
+        search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    else:
+        print("SOURCE/TARGET not in GRAPH!")
+        
 
 if __name__ == "__main__":
     main()
