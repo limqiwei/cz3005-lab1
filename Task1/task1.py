@@ -1,17 +1,12 @@
 import json
 from queue import PriorityQueue
 
-with open ('Dist.json','r') as dist_dictionary:
-    distData = json.load(dist_dictionary)
-
-with open ('G.json','r') as graph_dictionary:
-    graphData = json.load(graph_dictionary)
 
 class Graph:
     def __init__(self, num_of_vertices):
         self.v = num_of_vertices
         
-    def dijkstra(self, source_vertex, target_vertex):
+    def dijkstra(self, source_vertex, target_vertex, graphData, distData):
         visited = set()
         distance = {source_vertex: 0}
         parent_vertex = {source_vertex: None}
@@ -51,8 +46,20 @@ class Graph:
         return path_array[::-1]
 
 
-g = Graph(264346)
 
-parent = g.dijkstra('1','50')
-path = g.goal_path(parent,'50')
-print("Shortest Path: " + " -> ".join(path))
+
+def main():
+    with open ('Dist.json','r') as dist_dictionary:
+        distData = json.load(dist_dictionary)
+
+    with open ('G.json','r') as graph_dictionary:
+        graphData = json.load(graph_dictionary)
+
+    g = Graph(264346)
+
+    parent = g.dijkstra('1','50', graphData, distData)
+    path = g.goal_path(parent,'50')
+    print("Shortest Path: " + " -> ".join(path))
+
+if __name__ == "__main__":
+    main()
