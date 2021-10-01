@@ -19,13 +19,13 @@ def get_dist(from_node, to_node, DIST):
 
 def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
     queue = q.PriorityQueue()
-    visited = {}
+    previousNode_recorded = {}
     dist_so_far = {}
     cost_so_far = {}
     target_reached = False
-
+    
     queue.put((0, SOURCE))
-    visited[SOURCE] = None
+    previousNode_recorded[SOURCE] = None
     dist_so_far[SOURCE] = 0
     cost_so_far[SOURCE] = 0
 
@@ -43,14 +43,14 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
             distance_to_next = get_dist(current, next, DIST) 
             new_dist = dist_so_far[current] + distance_to_next
 
-            if next not in visited or new_dist < dist_so_far[next]:
+            if next not in previousNode_recorded or new_dist < dist_so_far[next]:
                 if new_cost <= ENERGY:
                     dist_so_far[next] = new_dist
                     cost_so_far[next] = new_cost
+                    previousNode_recorded[next] = current
                     queue.put((new_dist, next))
-                    visited[next] = current
 
-    return visited, dist_so_far[current], cost_so_far[current], target_reached
+    return previousNode_recorded, dist_so_far[current], cost_so_far[current], target_reached
 
 
 def get_path(SOURCE, TARGET, visited):
@@ -73,7 +73,14 @@ def get_path(SOURCE, TARGET, visited):
     return path_str
 
 
-def search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT):       
+def search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT):
+    if SOURCE not in GRAPH:
+        print("SOURCE not in GRAPH!")
+        return
+    if TARGET not in GRAPH:
+        print("TARGET not in GRAPH!")
+        return
+
     print("searching...")
     start_time = time.time()
 
@@ -90,30 +97,10 @@ def search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT):
         print(f"\nNo path exists between SOURCE and TARGET with energy budget = {ENERGY_CONSTRAINT}.")
 
     time_taken = end_time - start_time
-    print(f"Time taken: {time_taken} sec \n")
+    print(f"Search time: {time_taken} sec \n")
 
 
-def custom():
-    print("running...\n")
-
-    print("loading files...")
-    GRAPH = json.load(open("G.json", "r"))
-    COST = json.load(open("Cost.json", "r"))
-    DIST = json.load(open("Dist.json", "r"))
-
-    print("")
-    SOURCE = str(input("Enter source node: ")) # 1
-    TARGET = str(input("Enter target node: ")) # 20
-    ENERGY_CONSTRAINT = int(input("Enter energy budget: "))
-    print("")
-
-    if SOURCE in GRAPH and TARGET in GRAPH:
-        search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
-    else:
-        print("SOURCE/TARGET not in GRAPH!")
-
-
-def main():
+def load_files():
     print("running...")
 
     print("loading files...\n")
@@ -121,15 +108,30 @@ def main():
     COST = json.load(open("Cost.json", "r"))
     DIST = json.load(open("Dist.json", "r"))
 
+    return GRAPH, COST, DIST
+
+
+def custom():
+    GRAPH, COST, DIST = load_files()
+
+    SOURCE = str(input("Enter source node: "))
+    TARGET = str(input("Enter target node: "))
+    ENERGY_CONSTRAINT = int(input("Enter energy budget: "))
+    print("")
+
+    search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+
+
+def main():
+    GRAPH, COST, DIST = load_files()
+
     SOURCE = "1"
     TARGET = "50"
     ENERGY_CONSTRAINT = 287932
+    
+    search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
 
-    if SOURCE in GRAPH and TARGET in GRAPH:
-        search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
-    else:
-        print("SOURCE/TARGET not in GRAPH!")
-        
 
 if __name__ == "__main__":
     main()
+    # custom()
