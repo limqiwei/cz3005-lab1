@@ -38,14 +38,12 @@ class Graph():
 
     def shortest_path_ASTAR(self, source, target, energy_budget):
         node_data = {}
-        for key in self.graph_dict.keys():
-            node = self.Node(node_name=key, 
-                        cooordinates=self.coord_dict[key],
-                        parent_node=None, 
-                        g_value=(-1),
-                        total_cost=(-1),
-                        added_to_frontier_before=False)
-            node_data[key] = node
+
+        s_node = self.Node(node_name=source,cooordinates=self.coord_dict[source],parent_node=None,g_value=(-1),total_cost=(-1),added_to_frontier_before=False)
+        node_data[source] = s_node
+
+        t_node = self.Node(node_name=target,cooordinates=self.coord_dict[target],parent_node=None,g_value=(-1),total_cost=(-1),added_to_frontier_before=False)
+        node_data[target] = t_node
 
         source_node = node_data[source] # Get node object for source
         target_node = node_data[target] # Get node object for target
@@ -84,6 +82,10 @@ class Graph():
 
                 neighbour_nodes = self.graph_dict[current_node.node_name] # return a list of neighbour nodes
                 for node in neighbour_nodes:
+                    if (node not in node_data.keys()):
+                        new_node = self.Node(node_name=node,cooordinates=self.coord_dict[node],parent_node=None,g_value=(-1),total_cost=(-1),added_to_frontier_before=False)
+                        node_data[node] = new_node
+
                     neighbour_node = node_data[node]
 
                     next_g_value = current_g + self.dist_dict[f"{current_node.node_name},{neighbour_node.node_name}"]
