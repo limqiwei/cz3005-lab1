@@ -92,7 +92,7 @@ class Graph():
 
                     if (neighbour_node.added_to_frontier_before):
                         # Need to check if the path is shorter or not so as to decide if want to update
-                        if (next_g_value < neighbour_node.g_value) and (next_total_cost < energy_budget):
+                        if (next_g_value < neighbour_node.g_value) and (next_total_cost <= energy_budget):
                             neighbour_node.parent_node = current_node.node_name
                             neighbour_node.g_value = next_g_value
                             neighbour_node.total_cost = next_total_cost
@@ -100,7 +100,7 @@ class Graph():
                             dummy_count += 1
                     else: 
                         # Add to frontier for the first time, only need to check energy constraint
-                        if (next_total_cost < energy_budget):
+                        if (next_total_cost <= energy_budget):
                             neighbour_node.added_to_frontier_before = True
                             neighbour_node.parent_node = current_node.node_name
                             neighbour_node.g_value = next_g_value
