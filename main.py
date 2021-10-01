@@ -39,13 +39,11 @@ def main():
                 input("Press [Enter] to continue...")
             elif (choice == 3):
                 print("Running Algorithm 3 - Preset\n")
-                t3.main()
+                t3.main_preset()
                 input("Press [Enter] to continue...")
-
             elif (choice == 4):
                 print("Running Algorithm 1 - Manual\n")
                 # Call function here:
-
                 input("Press [Enter] to continue...")
             elif (choice == 5):
                 print("Running Algorithm 2 - Manual\n")
@@ -53,8 +51,7 @@ def main():
                 input("Press [Enter] to continue...")
             elif (choice == 6):
                 print("Running Algorithm 3 - Manual\n")
-                # Call function here:
-
+                t3.main_manual()
                 input("Press [Enter] to continue...")
             
             elif (choice == 7):

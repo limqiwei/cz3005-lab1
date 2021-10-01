@@ -175,7 +175,6 @@ def main_preset():
     else:
         print(f"No path found from start node to end node that satisfy the given constraints")
     print("======= End of A* Search (Preset) =======")
-    input("Press any key to exit")
 
 def main_manual():
     # Open files
@@ -245,7 +244,6 @@ def main_manual():
     else:
         print(f"No path found from start node to end node that satisfy the given constraints")
     print("======= End of A* Search (Manual) =======")
-    input("Press any key to exit")
 
 
 if __name__ == "__main__":
