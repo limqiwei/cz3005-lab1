@@ -22,7 +22,7 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
     previousNode_recorded = {}
     dist_so_far = {}
     cost_so_far = {}
-    target_reached = False
+    path = ""
     
     queue.put((0, SOURCE))
     previousNode_recorded[SOURCE] = None
@@ -33,7 +33,7 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
         current = queue.get()[1]
 
         if current == TARGET:
-            target_reached = True
+            path = get_path(SOURCE, TARGET, previousNode_recorded)
             break
  
         for next in neighbours(current, GRAPH):
@@ -50,7 +50,7 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
                     previousNode_recorded[next] = current
                     queue.put((new_dist, next))
 
-    return previousNode_recorded, dist_so_far[current], cost_so_far[current], target_reached
+    return path, dist_so_far[current], cost_so_far[current]
 
 
 def get_path(SOURCE, TARGET, visited):
@@ -84,12 +84,11 @@ def search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT):
     print("searching...")
     start_time = time.time()
 
-    visited, total_dist, total_cost, target_reached = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    path, total_dist, total_cost = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
     
     end_time = time.time()
 
-    if target_reached:
-        path = get_path(SOURCE, TARGET, visited)
+    if path:
         print(f"\nShortest path: {path}")
         print(f"\nShortest distance: {total_dist}")
         print(f"Total energy cost: {total_cost}\n")
@@ -133,5 +132,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    # custom()
+    # main()
+    custom()
