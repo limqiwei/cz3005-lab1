@@ -111,6 +111,7 @@ def load_files():
 
 
 def custom():
+    print("======= Start of UCS Search (Manual) =======")
     GRAPH, COST, DIST = load_files()
 
     SOURCE = str(input("Enter source node: "))
@@ -119,9 +120,11 @@ def custom():
     print("")
 
     search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    print("======= End of A* Search (Manual) =======\n")
 
 
 def main():
+    print("======= Start of UCS Search (Preset) =======")
     GRAPH, COST, DIST = load_files()
 
     SOURCE = "1"
@@ -129,8 +132,9 @@ def main():
     ENERGY_CONSTRAINT = 287932
     
     search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    print("======= End of UCS Search (Preset) =======\n")
 
 
 if __name__ == "__main__":
-    # main()
+    main()
     custom()
