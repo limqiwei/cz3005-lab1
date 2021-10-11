@@ -63,7 +63,7 @@ class Graph():
         
         while(not priority_queue.empty()): # While there is still things in the queue. If not then that means there is no path to the target.
 
-            _, __, current_node = priority_queue.get()    # Get next node
+            _, __, current_node = priority_queue.get()    # Get next node by unpacking
 
             # Exploration Phase
             if (current_node.node_name == target_node.node_name): # Check if it is target
@@ -82,7 +82,7 @@ class Graph():
 
                 neighbour_nodes = self.graph_dict[current_node.node_name] # return a list of neighbour nodes
                 for node in neighbour_nodes:
-                    if (node not in node_data.keys()):
+                    if (node not in node_data):
                         new_node = self.Node(node_name=node,cooordinates=self.coord_dict[node],parent_node=None,g_value=(-1),total_cost=(-1),added_to_frontier_before=False)
                         node_data[node] = new_node
 
@@ -138,12 +138,12 @@ def get_total_distance_and_cost(path_list, dist_dict, cost_dict):
             total_cost += cost_dict[f"{current_node},{next_node}"]
         return (total_distance,total_cost)
 
-def main_preset():
+def read_file_as_dictionary(graph_file, distance_file, coordinates_file, cost_file):
     # Open files
-    graph_file = open('G.json','r')
-    distance_file = open('Dist.json','r')
-    coordinates_file = open('Coord.json','r')
-    cost_file = open('Cost.json','r')
+    graph_file = open(graph_file,'r')
+    distance_file = open(distance_file,'r')
+    coordinates_file = open(coordinates_file,'r')
+    cost_file = open(cost_file,'r')
 
     # Read into dictionary variable
     graph_dict = json.load(graph_file)
@@ -155,7 +155,19 @@ def main_preset():
     graph_file.close()
     distance_file.close()
     coordinates_file.close()
-    cost_file.close() 
+    cost_file.close()
+
+    return (graph_dict, dist_dict, coord_dict, cost_dict)
+
+
+
+def main_preset():
+    # Read files into dctionary
+    GRAPH_FILE = 'G.json'
+    DISTANCE_FILE = 'Dist.json'
+    COORDINATES_FILE = 'Coord.json'
+    COST_FILE = 'Cost.json'
+    (graph_dict, dist_dict, coord_dict, cost_dict) = read_file_as_dictionary(GRAPH_FILE, DISTANCE_FILE, COORDINATES_FILE, COST_FILE)
 
     # Define parameter for algorithm
     START_NODE = "1"
@@ -179,23 +191,12 @@ def main_preset():
     print("======= End of A* Search (Preset) =======")
 
 def main_manual():
-    # Open files
-    graph_file = open('G.json','r')
-    distance_file = open('Dist.json','r')
-    coordinates_file = open('Coord.json','r')
-    cost_file = open('Cost.json','r')
-
-    # Read into dictionary variable
-    graph_dict = json.load(graph_file)
-    dist_dict = json.load(distance_file)
-    coord_dict = json.load(coordinates_file)
-    cost_dict = json.load(cost_file)
-
-    # Close File
-    graph_file.close()
-    distance_file.close()
-    coordinates_file.close()
-    cost_file.close() 
+    # Read files into dctionary
+    GRAPH_FILE = 'G.json'
+    DISTANCE_FILE = 'Dist.json'
+    COORDINATES_FILE = 'Coord.json'
+    COST_FILE = 'Cost.json'
+    (graph_dict, dist_dict, coord_dict, cost_dict) = read_file_as_dictionary(GRAPH_FILE, DISTANCE_FILE, COORDINATES_FILE, COST_FILE) 
 
     # Define parameters by user input
     START_NODE = None
@@ -225,11 +226,6 @@ def main_manual():
             break
         except:
             print("Please enter only integer values.")
-
-    print(f"START: {START_NODE}")
-    print(f"END: {END_NODE}")
-    print(f"BUDGET: {ENERGY_BUDGET}")
-
 
     # Running Algorithm
     print("======= Start of A* Search (Manual) =======")
