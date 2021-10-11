@@ -77,10 +77,10 @@ def main():
         path = g.goal_path(parent,TARGET_NODE)
         print("Shortest Path: " + " -> ".join(path) + "\n")
         print("Time taken:\t%s seconds" % (time.time() - start_time))
-        print("==== End of Shortest Path Search - Without energy constaint (Present) ====")
+        print("==== End of Shortest Path Search - Without energy constaint (Preset) ====")
     else:
         print(f"No path exists between node {SOURCE_NODE} and node {TARGET_NODE}.")
-        print("==== End of Shortest Path Search - Without energy constaint (Present) ====")
+        print("==== End of Shortest Path Search - Without energy constaint (Preset) ====")
     
 def custom():
     
@@ -111,7 +111,7 @@ def custom():
             break            
             
     #Running algorithm
-    print("==== Start of Shortest Path Search - Without energy constaint (Custom) ====")
+    print("==== Start of Shortest Path Search - Without energy constaint (Manual) ====")
     print(f"Start node : {SOURCE_NODE}, End node: {TARGET_NODE}" + "\n")
     
     g = Graph(264346)
@@ -122,10 +122,10 @@ def custom():
         path = g.goal_path(parent,TARGET_NODE)
         print("Shortest Path: " + " -> ".join(path) + "\n")
         print("Time taken:\t%s seconds" % (time.time() - start_time))
-        print("==== End of Shortest Path Search - Without energy constaint (Custom) ====")
+        print("==== End of Shortest Path Search - Without energy constaint (Manual) ====")
     else:
         print(f"No path exists between node {SOURCE_NODE} and node {TARGET_NODE}.")
-        print("==== End of Shortest Path Search - Without energy constaint (Present) ====")
+        print("==== End of Shortest Path Search - Without energy constaint (Manual) ====")
 
 
 
