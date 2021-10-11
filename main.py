@@ -43,7 +43,7 @@ def main():
                 input("Press [Enter] to continue...")
             elif (choice == 4):
                 print("Running Algorithm 1 - Manual\n")
-                # Call function here:
+                t1.custom()
                 input("Press [Enter] to continue...")
             elif (choice == 5):
                 print("Running Algorithm 2 - Manual\n")
