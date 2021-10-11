@@ -120,7 +120,7 @@ def custom():
     print("")
 
     search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
-    print("======= End of A* Search (Manual) =======\n")
+    print("======= End of UCS Search (Manual) =======\n")
 
 
 def main():
