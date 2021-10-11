@@ -130,5 +130,5 @@ def custom():
 
 
 if __name__ == "__main__":
-    main()
-    #custom()
+    #main()
+    custom()
