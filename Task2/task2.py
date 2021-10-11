@@ -74,13 +74,6 @@ def get_path(SOURCE, TARGET, visited):
 
 
 def search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT):
-    if SOURCE not in GRAPH:
-        print("SOURCE not in GRAPH!")
-        return
-    if TARGET not in GRAPH:
-        print("TARGET not in GRAPH!")
-        return
-
     print("searching...")
     start_time = time.time()
 
@@ -114,9 +107,35 @@ def custom():
     print("======= Start of UCS Search (Manual) =======")
     GRAPH, COST, DIST = load_files()
 
-    SOURCE = str(input("Enter source node: "))
-    TARGET = str(input("Enter target node: "))
-    ENERGY_CONSTRAINT = int(input("Enter energy budget: "))
+    # Define parameters by user input
+    SOURCE = None
+    TARGET = None
+    ENERGY_CONSTRAINT = None
+
+    while True:
+        start = input("Enter start node: ")
+        if (start not in GRAPH.keys()):
+            print("Start Node does not exist. Please enter a valid start node. Try again")
+        else:
+            SOURCE = start
+            break
+    
+    while True:
+        end = input("Enter end node: ")
+        if (end not in GRAPH.keys()):
+            print("End Node does not exist. Please enter a valid start node. Try again")
+        else:
+            TARGET = end
+            break
+
+    while True:
+        try:
+            budget = int(input("Enter energy budget (integer values): "))
+            ENERGY_CONSTRAINT = budget
+            break
+        except:
+            print("Please enter only integer values.")
+
     print("")
 
     search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
