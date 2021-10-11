@@ -22,7 +22,7 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
     previousNode_recorded = {}
     dist_so_far = {}
     cost_so_far = {}
-    path = ""
+    target_reached = False
     
     queue.put((0, SOURCE))
     previousNode_recorded[SOURCE] = None
@@ -33,7 +33,7 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
         current = queue.get()[1]
 
         if current == TARGET:
-            path = get_path(SOURCE, TARGET, previousNode_recorded)
+            target_reached = True
             break
  
         for next in neighbours(current, GRAPH):
@@ -50,7 +50,7 @@ def UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY):
                     previousNode_recorded[next] = current
                     queue.put((new_dist, next))
 
-    return path, dist_so_far[current], cost_so_far[current]
+    return previousNode_recorded, dist_so_far[current], cost_so_far[current], target_reached
 
 
 def get_path(SOURCE, TARGET, visited):
@@ -84,11 +84,12 @@ def search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT):
     print("searching...")
     start_time = time.time()
 
-    path, total_dist, total_cost = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    visited, total_dist, total_cost, target_reached = UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
     
     end_time = time.time()
 
-    if path:
+    if target_reached:
+        path = get_path(SOURCE, TARGET, visited)
         print(f"\nShortest path: {path}")
         print(f"\nShortest distance: {total_dist}")
         print(f"Total energy cost: {total_cost}\n")
@@ -111,7 +112,6 @@ def load_files():
 
 
 def custom():
-    print("======= Start of UCS Search (Manual) =======")
     GRAPH, COST, DIST = load_files()
 
     SOURCE = str(input("Enter source node: "))
@@ -120,11 +120,9 @@ def custom():
     print("")
 
     search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
-    print("======= End of A* Search (Manual) =======\n")
 
 
 def main():
-    print("======= Start of UCS Search (Preset) =======")
     GRAPH, COST, DIST = load_files()
 
     SOURCE = "1"
@@ -132,9 +130,8 @@ def main():
     ENERGY_CONSTRAINT = 287932
     
     search(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
-    print("======= End of UCS Search (Preset) =======\n")
 
 
 if __name__ == "__main__":
     main()
-    custom()
+    # custom()

@@ -14,10 +14,11 @@ ENERGY_CONSTRAINT = float("inf")
 
 
 if SOURCE in GRAPH and TARGET in GRAPH:
-    path, _, _ = task2.UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
-    if path:
-        path_str = list(path.split(" -> "))
-        path_list = list(map(str, path_str))
+    visited, _, _, target_reached = task2.UCS(SOURCE, TARGET, GRAPH, COST, DIST, ENERGY_CONSTRAINT)
+    if target_reached:
+        path_str = task2.get_path(SOURCE, TARGET, visited)
+        path = list(path_str.split(" -> "))
+        path_list = list(map(str, path))
         t2_path = set(path_list)
     else:
         t2_path = set()
